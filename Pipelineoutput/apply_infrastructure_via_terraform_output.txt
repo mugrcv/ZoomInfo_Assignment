@@ -1,0 +1,200 @@
++ umask 000
+
++ GIT_LFS_SKIP_SMUDGE=1 retry 6 git clone --branch="vive_test" --depth 50 https://x-token-auth:$REPOSITORY_OAUTH_ACCESS_TOKEN@bitbucket.org/$BITBUCKET_REPO_FULL_NAME.git $BUILD_DIR
+Cloning into '/opt/atlassian/pipelines/agent/build'...
+
++ git reset --hard da5857dc49e6bba532713a4074a4185394256108
+HEAD is now at da5857d vivek project
+
++ git config user.name bitbucket-pipelines
+
++ git config user.email commits-noreply@bitbucket.org
+
++ git config push.default current
+
++ git config http.${BITBUCKET_GIT_HTTP_ORIGIN}.proxy http://localhost:29418/
+
++ git remote set-url origin http://bitbucket.org/$BITBUCKET_REPO_FULL_NAME
+
++ git reflog expire --expire=all --all
+
++ echo ".bitbucket/pipelines/generated" >> .git/info/exclude
+
++ chmod 777 $BUILD_DIR
+
+Images used:
+    build : docker.io/hashicorp/terraform@sha256:8aecb79b6197269722e2e3fba5040756135d20427da395a0f9883bb0927e16d1
++ echo "apply infra"
+apply infra
+
++ export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_PREPROD
+
++ export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_PREPROD
+
++ export AWS_REGION=us-east-1
+
++ ls && pwd
+https://bitbucket.org/vivekkarthik/vivek_test/src/da5857dc49e6bba532713a4074a4185394256108/README.md
+https://bitbucket.org/vivekkarthik/vivek_test/src/da5857dc49e6bba532713a4074a4185394256108/bitbucket-pipelines.yml
+https://bitbucket.org/vivekkarthik/vivek_test/src/da5857dc49e6bba532713a4074a4185394256108/create_ecr.sh
+https://bitbucket.org/vivekkarthik/vivek_test/src/da5857dc49e6bba532713a4074a4185394256108/create_s3.sh
+service1
+service2
+vivek_assignment
+/opt/atlassian/pipelines/agent/build
+
++ cd vivek_assignment/
+
++ chmod +x terraform
+
++ terraform --version
+Terraform v1.2.1
+on linux_amd64
++ provider registry.terraform.io/hashicorp/aws v4.15.1
+
++ terraform init
+[0m[1mInitializing modules...[0m
+
+[0m[1mInitializing the backend...[0m
+
+[0m[1mInitializing provider plugins...[0m
+- Reusing previous version of hashicorp/aws from the dependency lock file
+- Installing hashicorp/aws v4.15.1...
+- Installed hashicorp/aws v4.15.1 (signed by HashiCorp)
+
+Terraform has made some changes to the provider dependency selections recorded
+in the .terraform.lock.hcl file. Review those changes and commit them to your
+version control system if they represent changes you intended to make.
+
+[0m[1m[32mTerraform has been successfully initialized![0m[32m[0m
+[0m[32m
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.[0m
+
++ terraform plan  -input=false
+[0m[1maws_iam_policy.ecr_image_pull: Refreshing state... [id=arn:aws:iam::623199899445:policy/ecr-image-pull][0m
+[0m[1maws_apigatewayv2_api.api-gate: Refreshing state... [id=jszkvbq1vh][0m
+[0m[1maws_appautoscaling_target.app_scale_target_service2: Refreshing state... [id=service/service2/service2_service][0m
+[0m[1maws_vpc.myvpc: Refreshing state... [id=vpc-0981d78114c6f48d2][0m
+[0m[1maws_cloudwatch_dashboard.main2: Refreshing state... [id=ECSService2][0m
+[0m[1maws_appautoscaling_target.app_scale_target_service1: Refreshing state... [id=service/service1/service1_service][0m
+[0m[1mmodule.s2-ecs.aws_ecs_cluster.this: Refreshing state... [id=arn:aws:ecs:us-east-1:623199899445:cluster/service2][0m
+[0m[1maws_cloudwatch_dashboard.main1: Refreshing state... [id=ECSService1][0m
+[0m[1mmodule.s1-ecs.aws_ecs_cluster.this: Refreshing state... [id=arn:aws:ecs:us-east-1:623199899445:cluster/service1][0m
+[0m[1maws_appautoscaling_policy.app_down_service1: Refreshing state... [id=app-scale-down-service1][0m
+[0m[1maws_appautoscaling_policy.app_up_service1: Refreshing state... [id=app-scale-up-service1][0m
+[0m[1maws_appautoscaling_policy.app_down_service2: Refreshing state... [id=app-scale-down-service2][0m
+[0m[1maws_appautoscaling_policy.app_up_service2: Refreshing state... [id=app-scale-up-service2][0m
+[0m[1maws_apigatewayv2_stage.api_stage: Refreshing state... [id=$default][0m
+[0m[1maws_iam_role_policy_attachment.attachement-policy: Refreshing state... [id=ecsTaskExecutionRole-20220528023709365500000001][0m
+[0m[1maws_internet_gateway.igw: Refreshing state... [id=igw-053b352ca6127ec56][0m
+[0m[1maws_route53_zone.secondary: Refreshing state... [id=Z04528922ZGK2UXY1QO93][0m
+[0m[1maws_route_table.private_route: Refreshing state... [id=rtb-0469e73d796dc367c][0m
+[0m[1maws_subnet.private_subnet[1]: Refreshing state... [id=subnet-0678568cd34d95371][0m
+[0m[1maws_subnet.private_subnet[0]: Refreshing state... [id=subnet-0f501861fae274f86][0m
+[0m[1mmodule.s1-tg[1].aws_lb_target_group.service1_tg: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:623199899445:targetgroup/service-2/189c7a5a8ca544ed][0m
+[0m[1maws_security_group.endpoint-sg: Refreshing state... [id=sg-0d42427a5fb89dda1][0m
+[0m[1mmodule.s1-tg[0].aws_lb_target_group.service1_tg: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:623199899445:targetgroup/service-1/15ddb7ce2ac47947][0m
+[0m[1maws_security_group.vpc-link-sg: Refreshing state... [id=sg-0ec9572d43306c709][0m
+[0m[1maws_security_group.service-sg: Refreshing state... [id=sg-07da94ded1afc25d8][0m
+[0m[1maws_security_group.pub-lb-sg: Refreshing state... [id=sg-02961a269985fc119][0m
+[0m[1maws_vpc_endpoint.s3-gateway-endpoint: Refreshing state... [id=vpce-0778879df1c8242d0][0m
+[0m[1maws_route_table_association.private[1]: Refreshing state... [id=rtbassoc-0e7c49de6005b938a][0m
+[0m[1maws_vpc_endpoint.ecr-api-endpoint: Refreshing state... [id=vpce-0f644388cded39a08][0m
+[0m[1maws_vpc_endpoint.logs-ep: Refreshing state... [id=vpce-0d89c61734d3da2a2][0m
+[0m[1maws_vpc_endpoint.ecr-dkr-endpoint: Refreshing state... [id=vpce-0f87eaa9ceb535e90][0m
+[0m[1maws_route_table_association.private[0]: Refreshing state... [id=rtbassoc-0bb5f48367b14efb6][0m
+[0m[1maws_apigatewayv2_vpc_link.vpc_link: Refreshing state... [id=tpfcjj][0m
+[0m[1mmodule.pri-lb.aws_lb.loadbalancer-module: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:623199899445:loadbalancer/app/pri-alb/df0b12dead4a6666][0m
+[0m[1mmodule.pub-lb.aws_lb.loadbalancer-module: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:623199899445:loadbalancer/app/pub-alb/7286d36a4583719b][0m
+[0m[1maws_alb_listener.http-private-listner: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:623199899445:listener/app/pri-alb/df0b12dead4a6666/6b8b8e6c71ac1d9b][0m
+[0m[1maws_cloudwatch_metric_alarm.scale_out_service1: Refreshing state... [id=scale_out_service1][0m
+[0m[1maws_cloudwatch_metric_alarm.scale_out_service2: Refreshing state... [id=scale_out_service2][0m
+[0m[1maws_alb_listener.http-listner: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:623199899445:listener/app/pub-alb/7286d36a4583719b/8c18772a2559faa5][0m
+[0m[1mmodule.ecs-s2.aws_ecs_task_definition.service: Refreshing state... [id=service2_service][0m
+[0m[1mmodule.ecs-s1.aws_ecs_task_definition.service: Refreshing state... [id=service1_service][0m
+[0m[1maws_cloudwatch_metric_alarm.scale_in_service1: Refreshing state... [id=scale_in_service1][0m
+[0m[1maws_cloudwatch_metric_alarm.scale_in_service2: Refreshing state... [id=scale_in_service2][0m
+[0m[1mmodule.ecs-s1.aws_ecs_service.service1: Refreshing state... [id=arn:aws:ecs:us-east-1:623199899445:service/service1/service1_service][0m
+[0m[1mmodule.ecs-s2.aws_ecs_service.service1: Refreshing state... [id=arn:aws:ecs:us-east-1:623199899445:service/service2/service2_service][0m
+[0m[1maws_apigatewayv2_integration.api_integration: Refreshing state... [id=6zk2z8d][0m
+[0m[1maws_route53_record.servicetwo_53: Refreshing state... [id=Z04528922ZGK2UXY1QO93_service2_CNAME][0m
+[0m[1maws_route53_record.serviceone_53: Refreshing state... [id=Z04528922ZGK2UXY1QO93_service1_CNAME][0m
+[0m[1maws_apigatewayv2_route.api-route: Refreshing state... [id=12mamhs][0m
+[0m[1maws_apigatewayv2_deployment.default-deployment: Refreshing state... [id=206egm][0m
+
+[0m[1m[32mNo changes.[0m[1m Your infrastructure matches the configuration.[0m
+
+[0mTerraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+
++ terraform apply -input=false -auto-approve
+[0m[1maws_cloudwatch_dashboard.main1: Refreshing state... [id=ECSService1][0m
+[0m[1maws_cloudwatch_dashboard.main2: Refreshing state... [id=ECSService2][0m
+[0m[1maws_appautoscaling_target.app_scale_target_service1: Refreshing state... [id=service/service1/service1_service][0m
+[0m[1maws_apigatewayv2_api.api-gate: Refreshing state... [id=jszkvbq1vh][0m
+[0m[1mmodule.s1-ecs.aws_ecs_cluster.this: Refreshing state... [id=arn:aws:ecs:us-east-1:623199899445:cluster/service1][0m
+[0m[1mmodule.s2-ecs.aws_ecs_cluster.this: Refreshing state... [id=arn:aws:ecs:us-east-1:623199899445:cluster/service2][0m
+[0m[1maws_appautoscaling_target.app_scale_target_service2: Refreshing state... [id=service/service2/service2_service][0m
+[0m[1maws_vpc.myvpc: Refreshing state... [id=vpc-0981d78114c6f48d2][0m
+[0m[1maws_iam_policy.ecr_image_pull: Refreshing state... [id=arn:aws:iam::623199899445:policy/ecr-image-pull][0m
+[0m[1maws_appautoscaling_policy.app_down_service2: Refreshing state... [id=app-scale-down-service2][0m
+[0m[1maws_appautoscaling_policy.app_up_service2: Refreshing state... [id=app-scale-up-service2][0m
+[0m[1maws_appautoscaling_policy.app_up_service1: Refreshing state... [id=app-scale-up-service1][0m
+[0m[1maws_appautoscaling_policy.app_down_service1: Refreshing state... [id=app-scale-down-service1][0m
+[0m[1maws_iam_role_policy_attachment.attachement-policy: Refreshing state... [id=ecsTaskExecutionRole-20220528023709365500000001][0m
+[0m[1maws_apigatewayv2_stage.api_stage: Refreshing state... [id=$default][0m
+[0m[1maws_route_table.private_route: Refreshing state... [id=rtb-0469e73d796dc367c][0m
+[0m[1maws_internet_gateway.igw: Refreshing state... [id=igw-053b352ca6127ec56][0m
+[0m[1maws_subnet.private_subnet[1]: Refreshing state... [id=subnet-0678568cd34d95371][0m
+[0m[1maws_route53_zone.secondary: Refreshing state... [id=Z04528922ZGK2UXY1QO93][0m
+[0m[1mmodule.s1-tg[0].aws_lb_target_group.service1_tg: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:623199899445:targetgroup/service-1/15ddb7ce2ac47947][0m
+[0m[1maws_security_group.pub-lb-sg: Refreshing state... [id=sg-02961a269985fc119][0m
+[0m[1maws_subnet.private_subnet[0]: Refreshing state... [id=subnet-0f501861fae274f86][0m
+[0m[1mmodule.s1-tg[1].aws_lb_target_group.service1_tg: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:623199899445:targetgroup/service-2/189c7a5a8ca544ed][0m
+[0m[1maws_security_group.service-sg: Refreshing state... [id=sg-07da94ded1afc25d8][0m
+[0m[1maws_security_group.vpc-link-sg: Refreshing state... [id=sg-0ec9572d43306c709][0m
+[0m[1maws_security_group.endpoint-sg: Refreshing state... [id=sg-0d42427a5fb89dda1][0m
+[0m[1maws_vpc_endpoint.s3-gateway-endpoint: Refreshing state... [id=vpce-0778879df1c8242d0][0m
+[0m[1maws_route_table_association.private[1]: Refreshing state... [id=rtbassoc-0e7c49de6005b938a][0m
+[0m[1maws_route_table_association.private[0]: Refreshing state... [id=rtbassoc-0bb5f48367b14efb6][0m
+[0m[1mmodule.pub-lb.aws_lb.loadbalancer-module: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:623199899445:loadbalancer/app/pub-alb/7286d36a4583719b][0m
+[0m[1mmodule.pri-lb.aws_lb.loadbalancer-module: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:623199899445:loadbalancer/app/pri-alb/df0b12dead4a6666][0m
+[0m[1maws_vpc_endpoint.ecr-api-endpoint: Refreshing state... [id=vpce-0f644388cded39a08][0m
+[0m[1maws_vpc_endpoint.logs-ep: Refreshing state... [id=vpce-0d89c61734d3da2a2][0m
+[0m[1maws_apigatewayv2_vpc_link.vpc_link: Refreshing state... [id=tpfcjj][0m
+[0m[1maws_vpc_endpoint.ecr-dkr-endpoint: Refreshing state... [id=vpce-0f87eaa9ceb535e90][0m
+[0m[1maws_alb_listener.http-private-listner: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:623199899445:listener/app/pri-alb/df0b12dead4a6666/6b8b8e6c71ac1d9b][0m
+[0m[1maws_alb_listener.http-listner: Refreshing state... [id=arn:aws:elasticloadbalancing:us-east-1:623199899445:listener/app/pub-alb/7286d36a4583719b/8c18772a2559faa5][0m
+[0m[1maws_cloudwatch_metric_alarm.scale_out_service2: Refreshing state... [id=scale_out_service2][0m
+[0m[1maws_cloudwatch_metric_alarm.scale_out_service1: Refreshing state... [id=scale_out_service1][0m
+[0m[1maws_cloudwatch_metric_alarm.scale_in_service2: Refreshing state... [id=scale_in_service2][0m
+[0m[1maws_cloudwatch_metric_alarm.scale_in_service1: Refreshing state... [id=scale_in_service1][0m
+[0m[1maws_route53_record.serviceone_53: Refreshing state... [id=Z04528922ZGK2UXY1QO93_service1_CNAME][0m
+[0m[1maws_route53_record.servicetwo_53: Refreshing state... [id=Z04528922ZGK2UXY1QO93_service2_CNAME][0m
+[0m[1mmodule.ecs-s1.aws_ecs_task_definition.service: Refreshing state... [id=service1_service][0m
+[0m[1mmodule.ecs-s2.aws_ecs_task_definition.service: Refreshing state... [id=service2_service][0m
+[0m[1maws_apigatewayv2_integration.api_integration: Refreshing state... [id=6zk2z8d][0m
+[0m[1mmodule.ecs-s2.aws_ecs_service.service1: Refreshing state... [id=arn:aws:ecs:us-east-1:623199899445:service/service2/service2_service][0m
+[0m[1mmodule.ecs-s1.aws_ecs_service.service1: Refreshing state... [id=arn:aws:ecs:us-east-1:623199899445:service/service1/service1_service][0m
+[0m[1maws_apigatewayv2_route.api-route: Refreshing state... [id=12mamhs][0m
+[0m[1maws_apigatewayv2_deployment.default-deployment: Refreshing state... [id=206egm][0m
+
+[0m[1m[32mNo changes.[0m[1m Your infrastructure matches the configuration.[0m
+
+[0mTerraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+[0m[1m[32m
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+[0m
++ echo "infra applied successfully"
+infra applied successfully
+Searching for test report files in directories named [test-results, failsafe-reports, test-reports, TestResults, surefire-reports] down to a depth of 4
+Finished scanning for test reports. Found 0 test report files.
+Merged test suites, total number tests is 0, with 0 failures and 0 errors.
+

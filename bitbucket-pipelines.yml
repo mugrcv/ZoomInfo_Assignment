@@ -1,0 +1,92 @@
+image: atlassian/default-image:3
+
+options:
+  docker: true
+
+definitions:
+  services:
+    docker:
+      memory: 1024
+
+pipelines:
+  default:
+      - step:
+          name: 'docker image build'
+          oidc: true          
+          services:
+            - docker
+          script:
+            - echo 'configuring s3 and ecr ifnot exists'
+            - apt-get update && apt-get install -y awscli
+            - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_PREPROD
+            - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_PREPROD
+            - export AWS_REGION=us-east-1
+            - /usr/bin/sh create_ecr.sh service1
+            - /usr/bin/sh create_ecr.sh service2
+            - /usr/bin/sh create_s3.sh
+            - $(aws ecr get-login --no-include-email --region us-east-1 --registry=623199899445)
+            - echo 'building images'
+            - cd service1 && docker build -t service1:latest  .
+            - cd ../service2 && docker build -t service2:latest .
+            - echo 'images built successfully'
+            - pipe: atlassian/aws-ecr-push-image:1.5.0 ###to push the built images to ECR repo.We can use native command to push as well
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID_PREPROD
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY_PREPROD
+                AWS_DEFAULT_REGION: 'us-east-1'
+                IMAGE_NAME: 'service1'
+                TAGS: 'latest'
+            - pipe: atlassian/aws-ecr-push-image:1.5.0
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID_PREPROD
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY_PREPROD
+                AWS_DEFAULT_REGION: 'us-east-1'
+                IMAGE_NAME: 'service2'
+                TAGS: 'latest'
+
+
+      - step:
+         name: 'apply infrastructure via terraform'
+         image: hashicorp/terraform:latest
+         oidc: true
+         script:
+            - echo "apply infra"
+            - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_PREPROD
+            - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_PREPROD
+            - export AWS_REGION=us-east-1
+            - ls && pwd
+            - cd vivek_assignment/
+            - chmod +x terraform
+            - terraform --version
+            - terraform init 
+            - terraform plan  -input=false
+            - terraform apply -input=false -auto-approve
+            - echo "infra applied successfully"
+
+
+      - step:
+          name: 'Deploy service1 hosted in api gateway'
+          oidc: true
+          script:
+            - pipe: atlassian/aws-ecs-deploy:1.6.1
+              variables:
+                AWS_OIDC_ROLE_ARN: 'arn:aws:iam::623199899445:role/OIDCRole'
+                AWS_DEFAULT_REGION: 'us-east-1'
+                CLUSTER_NAME: 'service1'
+                SERVICE_NAME: 'service1_service'
+                FORCE_NEW_DEPLOYMENT: 'true'
+
+      - step:
+          name: 'Deploy serice2 hosted internal facing'
+          oidc: true
+          script:
+            - pipe: atlassian/aws-ecs-deploy:1.6.1
+              variables:
+                AWS_OIDC_ROLE_ARN: 'arn:aws:iam::623199899445:role/OIDCRole'
+                AWS_DEFAULT_REGION: 'us-east-1'
+                CLUSTER_NAME: 'service2'
+                SERVICE_NAME: 'service2_service'
+                FORCE_NEW_DEPLOYMENT: 'true'
+
+
+

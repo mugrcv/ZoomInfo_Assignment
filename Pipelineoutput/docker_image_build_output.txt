@@ -1,0 +1,1082 @@
++ umask 000
+
++ GIT_LFS_SKIP_SMUDGE=1 retry 6 git clone --branch="vive_test" --depth 50 https://x-token-auth:$REPOSITORY_OAUTH_ACCESS_TOKEN@bitbucket.org/$BITBUCKET_REPO_FULL_NAME.git $BUILD_DIR
+Cloning into '/opt/atlassian/pipelines/agent/build'...
+
++ git reset --hard da5857dc49e6bba532713a4074a4185394256108
+HEAD is now at da5857d vivek project
+
++ git config user.name bitbucket-pipelines
+
++ git config user.email commits-noreply@bitbucket.org
+
++ git config push.default current
+
++ git config http.${BITBUCKET_GIT_HTTP_ORIGIN}.proxy http://localhost:29418/
+
++ git remote set-url origin http://bitbucket.org/$BITBUCKET_REPO_FULL_NAME
+
++ git reflog expire --expire=all --all
+
++ echo ".bitbucket/pipelines/generated" >> .git/info/exclude
+
++ chmod 777 $BUILD_DIR
+
+Images used:
+    build : docker.io/atlassian/default-image@sha256:edf4bd880adf9e7f7677094f7a1d944524c7f98e939550bc152523c5cf6080ff
++ echo 'configuring s3 and ecr ifnot exists'
+configuring s3 and ecr ifnot exists
+
++ apt-get update && apt-get install -y awscli
+Get:1 http://security.ubuntu.com/ubuntu focal-security InRelease [114 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal InRelease [265 kB]
+Get:3 http://archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
+Get:4 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [1850 kB]
+Get:5 http://archive.ubuntu.com/ubuntu focal-backports InRelease [108 kB]
+Get:6 http://archive.ubuntu.com/ubuntu focal/main amd64 Packages [1275 kB]
+Get:7 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [1205 kB]
+Get:8 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 Packages [27.5 kB]
+Get:9 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [874 kB]
+Get:10 http://archive.ubuntu.com/ubuntu focal/universe amd64 Packages [11.3 MB]
+Get:11 http://archive.ubuntu.com/ubuntu focal/restricted amd64 Packages [33.4 kB]
+Get:12 http://archive.ubuntu.com/ubuntu focal/multiverse amd64 Packages [177 kB]
+Get:13 http://archive.ubuntu.com/ubuntu focal-updates/restricted amd64 Packages [1285 kB]
+Get:14 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [2280 kB]
+Get:15 http://archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 Packages [30.2 kB]
+Get:16 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [1161 kB]
+Get:17 http://archive.ubuntu.com/ubuntu focal-backports/universe amd64 Packages [27.1 kB]
+Get:18 http://archive.ubuntu.com/ubuntu focal-backports/main amd64 Packages [53.8 kB]
+Fetched 22.2 MB in 2s (9292 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  docutils-common fontconfig fonts-droid-fallback fonts-noto-mono
+  fonts-urw-base35 ghostscript groff groff-base gsfonts hicolor-icon-theme
+  imagemagick imagemagick-6-common imagemagick-6.q16 libcairo2 libdatrie1
+  libdjvulibre-text libdjvulibre21 libfftw3-double3 libfribidi0 libgs9
+  libgs9-common libidn11 libijs-0.35 libilmbase24 libimagequant0 libjbig0
+  libjbig2dec0 liblqr-1-0 libltdl7 libmagickcore-6.q16-6
+  libmagickcore-6.q16-6-extra libmagickwand-6.q16-6 libnetpbm10 libopenexr24
+  libopenjp2-7 libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0
+  libpaper-utils libpaper1 libthai-data libthai0 libtiff5 libuchardet0
+  libwebp6 libwebpdemux2 libwebpmux3 libwmf0.2-7 libxcb-render0 libxrender1
+  netpbm poppler-data psutils python3-botocore python3-colorama
+  python3-dateutil python3-docutils python3-jmespath python3-olefile
+  python3-pil python3-pyasn1 python3-pygments python3-roman python3-rsa
+  python3-s3transfer python3-yaml sgml-base xml-core
+Suggested packages:
+  fonts-noto fonts-freefont-otf | fonts-freefont-ttf fonts-texgyre
+  ghostscript-x imagemagick-doc autotrace cups-bsd | lpr | lprng enscript
+  ffmpeg gimp gnuplot grads graphviz hp2xx html2ps libwmf-bin mplayer povray
+  radiance sane-utils texlive-base-bin transfig ufraw-batch xdg-utils
+  libfftw3-bin libfftw3-dev inkscape libjxr-tools libwmf0.2-7-gtk
+  poppler-utils fonts-japanese-mincho | fonts-ipafont-mincho
+  fonts-japanese-gothic | fonts-ipafont-gothic fonts-arphic-ukai
+  fonts-arphic-uming fonts-nanum docutils-doc fonts-linuxlibertine
+  | ttf-linux-libertine texlive-lang-french texlive-latex-base
+  texlive-latex-recommended python-pil-doc python3-pil-dbg python-pygments-doc
+  ttf-bitstream-vera sgml-base-doc debhelper
+The following NEW packages will be installed:
+  awscli docutils-common fontconfig fonts-droid-fallback fonts-noto-mono
+  fonts-urw-base35 ghostscript groff groff-base gsfonts hicolor-icon-theme
+  imagemagick imagemagick-6-common imagemagick-6.q16 libcairo2 libdatrie1
+  libdjvulibre-text libdjvulibre21 libfftw3-double3 libfribidi0 libgs9
+  libgs9-common libidn11 libijs-0.35 libilmbase24 libimagequant0 libjbig0
+  libjbig2dec0 liblqr-1-0 libltdl7 libmagickcore-6.q16-6
+  libmagickcore-6.q16-6-extra libmagickwand-6.q16-6 libnetpbm10 libopenexr24
+  libopenjp2-7 libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0
+  libpaper-utils libpaper1 libthai-data libthai0 libtiff5 libuchardet0
+  libwebp6 libwebpdemux2 libwebpmux3 libwmf0.2-7 libxcb-render0 libxrender1
+  netpbm poppler-data psutils python3-botocore python3-colorama
+  python3-dateutil python3-docutils python3-jmespath python3-olefile
+  python3-pil python3-pyasn1 python3-pygments python3-roman python3-rsa
+  python3-s3transfer python3-yaml sgml-base xml-core
+0 upgraded, 69 newly installed, 0 to remove and 104 not upgraded.
+Need to get 34.5 MB of archives.
+After this operation, 166 MB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu focal/main amd64 fonts-droid-fallback all 1:6.0.1r16-1.1 [1805 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal/main amd64 libfftw3-double3 amd64 3.3.8-2ubuntu1 [728 kB]
+Get:3 http://archive.ubuntu.com/ubuntu focal/main amd64 libjbig0 amd64 2.1-3.1build1 [26.7 kB]
+Get:4 http://archive.ubuntu.com/ubuntu focal/universe amd64 liblqr-1-0 amd64 0.4.2-2.1 [27.7 kB]
+Get:5 http://archive.ubuntu.com/ubuntu focal/main amd64 libltdl7 amd64 2.4.6-14 [38.5 kB]
+Get:6 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libwebp6 amd64 0.6.1-2ubuntu0.20.04.1 [185 kB]
+Get:7 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libtiff5 amd64 4.1.0+git191117-2ubuntu0.20.04.3 [162 kB]
+Get:8 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libwebpmux3 amd64 0.6.1-2ubuntu0.20.04.1 [19.5 kB]
+Get:9 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 imagemagick-6-common all 8:6.9.10.23+dfsg-2.1ubuntu11.4 [60.9 kB]
+Get:10 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 libmagickcore-6.q16-6 amd64 8:6.9.10.23+dfsg-2.1ubuntu11.4 [1647 kB]
+Get:11 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 libmagickwand-6.q16-6 amd64 8:6.9.10.23+dfsg-2.1ubuntu11.4 [303 kB]
+Get:12 http://archive.ubuntu.com/ubuntu focal/main amd64 poppler-data all 0.4.9-2 [1475 kB]
+Get:13 http://archive.ubuntu.com/ubuntu focal/main amd64 sgml-base all 1.29.1 [12.4 kB]
+Get:14 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libfribidi0 amd64 1.0.8-2ubuntu0.1 [24.2 kB]
+Get:15 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 python3-yaml amd64 5.3.1-1ubuntu0.1 [136 kB]
+Get:16 http://archive.ubuntu.com/ubuntu focal/main amd64 libuchardet0 amd64 0.0.6-3build1 [65.2 kB]
+Get:17 http://archive.ubuntu.com/ubuntu focal/main amd64 groff-base amd64 1.22.4-4build1 [847 kB]
+Get:18 http://archive.ubuntu.com/ubuntu focal/universe amd64 groff amd64 1.22.4-4build1 [3951 kB]
+Get:19 http://archive.ubuntu.com/ubuntu focal/main amd64 python3-dateutil all 2.7.3-3ubuntu1 [63.3 kB]
+Get:20 http://archive.ubuntu.com/ubuntu focal/main amd64 xml-core all 0.18+nmu1 [21.6 kB]
+Get:21 http://archive.ubuntu.com/ubuntu focal/main amd64 docutils-common all 0.16+dfsg-2 [116 kB]
+Get:22 http://archive.ubuntu.com/ubuntu focal/main amd64 python3-roman all 2.0.0-3build1 [8728 B]
+Get:23 http://archive.ubuntu.com/ubuntu focal/main amd64 python3-docutils all 0.16+dfsg-2 [368 kB]
+Get:24 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 python3-jmespath all 0.9.4-2ubuntu1 [21.5 kB]
+Get:25 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 python3-botocore all 1.16.19+repack-1ubuntu0.20.04.1 [3255 kB]
+Get:26 http://archive.ubuntu.com/ubuntu focal/main amd64 python3-pyasn1 all 0.4.2-3build1 [46.7 kB]
+Get:27 http://archive.ubuntu.com/ubuntu focal/main amd64 python3-colorama all 0.4.3-1build1 [23.9 kB]
+Get:28 http://archive.ubuntu.com/ubuntu focal/universe amd64 python3-rsa all 4.0-3 [24.7 kB]
+Get:29 http://archive.ubuntu.com/ubuntu focal/universe amd64 python3-s3transfer all 0.3.3-1 [46.6 kB]
+Get:30 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 awscli all 1.18.69-1ubuntu0.20.04.1 [967 kB]
+Get:31 http://archive.ubuntu.com/ubuntu focal/main amd64 fontconfig amd64 2.13.1-2ubuntu3 [171 kB]
+Get:32 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 fonts-noto-mono all 20200323-1build1~ubuntu20.04.1 [80.6 kB]
+Get:33 http://archive.ubuntu.com/ubuntu focal/main amd64 fonts-urw-base35 all 20170801.1-3 [6333 kB]
+Get:34 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libgs9-common all 9.50~dfsg-5ubuntu4.5 [681 kB]
+Get:35 http://archive.ubuntu.com/ubuntu focal/main amd64 libidn11 amd64 1.33-2.2ubuntu2 [46.2 kB]
+Get:36 http://archive.ubuntu.com/ubuntu focal/main amd64 libijs-0.35 amd64 0.35-15 [15.7 kB]
+Get:37 http://archive.ubuntu.com/ubuntu focal/main amd64 libjbig2dec0 amd64 0.18-1ubuntu1 [60.0 kB]
+Get:38 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libopenjp2-7 amd64 2.3.1-1ubuntu4.20.04.1 [141 kB]
+Get:39 http://archive.ubuntu.com/ubuntu focal/main amd64 libpaper1 amd64 1.1.28 [13.0 kB]
+Get:40 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libgs9 amd64 9.50~dfsg-5ubuntu4.5 [2172 kB]
+Get:41 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 ghostscript amd64 9.50~dfsg-5ubuntu4.5 [51.8 kB]
+Get:42 http://archive.ubuntu.com/ubuntu focal/universe amd64 gsfonts all 1:8.11+urwcyr1.0.7~pre44-4.4 [3120 kB]
+Get:43 http://archive.ubuntu.com/ubuntu focal/main amd64 hicolor-icon-theme all 0.17-2 [9976 B]
+Get:44 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 imagemagick-6.q16 amd64 8:6.9.10.23+dfsg-2.1ubuntu11.4 [427 kB]
+Get:45 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 imagemagick amd64 8:6.9.10.23+dfsg-2.1ubuntu11.4 [14.4 kB]
+Get:46 http://archive.ubuntu.com/ubuntu focal/main amd64 libxcb-render0 amd64 1.14-2 [14.8 kB]
+Get:47 http://archive.ubuntu.com/ubuntu focal/main amd64 libxrender1 amd64 1:0.9.10-1 [18.7 kB]
+Get:48 http://archive.ubuntu.com/ubuntu focal/main amd64 libcairo2 amd64 1.16.0-4ubuntu1 [583 kB]
+Get:49 http://archive.ubuntu.com/ubuntu focal/main amd64 libdatrie1 amd64 0.2.12-3 [18.7 kB]
+Get:50 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libdjvulibre-text all 3.5.27.1-14ubuntu0.1 [49.2 kB]
+Get:51 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libdjvulibre21 amd64 3.5.27.1-14ubuntu0.1 [578 kB]
+Get:52 http://archive.ubuntu.com/ubuntu focal/universe amd64 libilmbase24 amd64 2.3.0-6build1 [75.1 kB]
+Get:53 http://archive.ubuntu.com/ubuntu focal/main amd64 libimagequant0 amd64 2.12.2-1.1 [31.4 kB]
+Get:54 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 libopenexr24 amd64 2.3.0-6ubuntu0.5 [592 kB]
+Get:55 http://archive.ubuntu.com/ubuntu focal/main amd64 libthai-data all 0.1.28-3 [134 kB]
+Get:56 http://archive.ubuntu.com/ubuntu focal/main amd64 libthai0 amd64 0.1.28-3 [18.1 kB]
+Get:57 http://archive.ubuntu.com/ubuntu focal/main amd64 libpango-1.0-0 amd64 1.44.7-2ubuntu4 [162 kB]
+Get:58 http://archive.ubuntu.com/ubuntu focal/main amd64 libpangoft2-1.0-0 amd64 1.44.7-2ubuntu4 [34.9 kB]
+Get:59 http://archive.ubuntu.com/ubuntu focal/main amd64 libpangocairo-1.0-0 amd64 1.44.7-2ubuntu4 [24.8 kB]
+Get:60 http://archive.ubuntu.com/ubuntu focal/main amd64 libwmf0.2-7 amd64 0.2.8.4-17ubuntu1 [149 kB]
+Get:61 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 libmagickcore-6.q16-6-extra amd64 8:6.9.10.23+dfsg-2.1ubuntu11.4 [64.6 kB]
+Get:62 http://archive.ubuntu.com/ubuntu focal/universe amd64 libnetpbm10 amd64 2:10.0-15.3build1 [58.0 kB]
+Get:63 http://archive.ubuntu.com/ubuntu focal/main amd64 libpaper-utils amd64 1.1.28 [8400 B]
+Get:64 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libwebpdemux2 amd64 0.6.1-2ubuntu0.20.04.1 [9576 B]
+Get:65 http://archive.ubuntu.com/ubuntu focal/universe amd64 netpbm amd64 2:10.0-15.3build1 [1017 kB]
+Get:66 http://archive.ubuntu.com/ubuntu focal/universe amd64 psutils amd64 1.17.dfsg-4 [56.2 kB]
+Get:67 http://archive.ubuntu.com/ubuntu focal/main amd64 python3-olefile all 0.46-2 [33.7 kB]
+Get:68 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 python3-pil amd64 7.0.0-4ubuntu0.5 [363 kB]
+Get:69 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 python3-pygments all 2.3.1+dfsg-1ubuntu2.2 [579 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 34.5 MB in 3s (10.6 MB/s)
+Selecting previously unselected package fonts-droid-fallback.
+(Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 22925 files and directories currently installed.)
+Preparing to unpack .../00-fonts-droid-fallback_1%3a6.0.1r16-1.1_all.deb ...
+Unpacking fonts-droid-fallback (1:6.0.1r16-1.1) ...
+Selecting previously unselected package libfftw3-double3:amd64.
+Preparing to unpack .../01-libfftw3-double3_3.3.8-2ubuntu1_amd64.deb ...
+Unpacking libfftw3-double3:amd64 (3.3.8-2ubuntu1) ...
+Selecting previously unselected package libjbig0:amd64.
+Preparing to unpack .../02-libjbig0_2.1-3.1build1_amd64.deb ...
+Unpacking libjbig0:amd64 (2.1-3.1build1) ...
+Selecting previously unselected package liblqr-1-0:amd64.
+Preparing to unpack .../03-liblqr-1-0_0.4.2-2.1_amd64.deb ...
+Unpacking liblqr-1-0:amd64 (0.4.2-2.1) ...
+Selecting previously unselected package libltdl7:amd64.
+Preparing to unpack .../04-libltdl7_2.4.6-14_amd64.deb ...
+Unpacking libltdl7:amd64 (2.4.6-14) ...
+Selecting previously unselected package libwebp6:amd64.
+Preparing to unpack .../05-libwebp6_0.6.1-2ubuntu0.20.04.1_amd64.deb ...
+Unpacking libwebp6:amd64 (0.6.1-2ubuntu0.20.04.1) ...
+Selecting previously unselected package libtiff5:amd64.
+Preparing to unpack .../06-libtiff5_4.1.0+git191117-2ubuntu0.20.04.3_amd64.deb ...
+Unpacking libtiff5:amd64 (4.1.0+git191117-2ubuntu0.20.04.3) ...
+Selecting previously unselected package libwebpmux3:amd64.
+Preparing to unpack .../07-libwebpmux3_0.6.1-2ubuntu0.20.04.1_amd64.deb ...
+Unpacking libwebpmux3:amd64 (0.6.1-2ubuntu0.20.04.1) ...
+Selecting previously unselected package imagemagick-6-common.
+Preparing to unpack .../08-imagemagick-6-common_8%3a6.9.10.23+dfsg-2.1ubuntu11.4_all.deb ...
+Unpacking imagemagick-6-common (8:6.9.10.23+dfsg-2.1ubuntu11.4) ...
+Selecting previously unselected package libmagickcore-6.q16-6:amd64.
+Preparing to unpack .../09-libmagickcore-6.q16-6_8%3a6.9.10.23+dfsg-2.1ubuntu11.4_amd64.deb ...
+Unpacking libmagickcore-6.q16-6:amd64 (8:6.9.10.23+dfsg-2.1ubuntu11.4) ...
+Selecting previously unselected package libmagickwand-6.q16-6:amd64.
+Preparing to unpack .../10-libmagickwand-6.q16-6_8%3a6.9.10.23+dfsg-2.1ubuntu11.4_amd64.deb ...
+Unpacking libmagickwand-6.q16-6:amd64 (8:6.9.10.23+dfsg-2.1ubuntu11.4) ...
+Selecting previously unselected package poppler-data.
+Preparing to unpack .../11-poppler-data_0.4.9-2_all.deb ...
+Unpacking poppler-data (0.4.9-2) ...
+Selecting previously unselected package sgml-base.
+Preparing to unpack .../12-sgml-base_1.29.1_all.deb ...
+Unpacking sgml-base (1.29.1) ...
+Selecting previously unselected package libfribidi0:amd64.
+Preparing to unpack .../13-libfribidi0_1.0.8-2ubuntu0.1_amd64.deb ...
+Unpacking libfribidi0:amd64 (1.0.8-2ubuntu0.1) ...
+Selecting previously unselected package python3-yaml.
+Preparing to unpack .../14-python3-yaml_5.3.1-1ubuntu0.1_amd64.deb ...
+Unpacking python3-yaml (5.3.1-1ubuntu0.1) ...
+Selecting previously unselected package libuchardet0:amd64.
+Preparing to unpack .../15-libuchardet0_0.0.6-3build1_amd64.deb ...
+Unpacking libuchardet0:amd64 (0.0.6-3build1) ...
+Selecting previously unselected package groff-base.
+Preparing to unpack .../16-groff-base_1.22.4-4build1_amd64.deb ...
+Unpacking groff-base (1.22.4-4build1) ...
+Selecting previously unselected package groff.
+Preparing to unpack .../17-groff_1.22.4-4build1_amd64.deb ...
+Unpacking groff (1.22.4-4build1) ...
+Selecting previously unselected package python3-dateutil.
+Preparing to unpack .../18-python3-dateutil_2.7.3-3ubuntu1_all.deb ...
+Unpacking python3-dateutil (2.7.3-3ubuntu1) ...
+Selecting previously unselected package xml-core.
+Preparing to unpack .../19-xml-core_0.18+nmu1_all.deb ...
+Unpacking xml-core (0.18+nmu1) ...
+Selecting previously unselected package docutils-common.
+Preparing to unpack .../20-docutils-common_0.16+dfsg-2_all.deb ...
+Unpacking docutils-common (0.16+dfsg-2) ...
+Selecting previously unselected package python3-roman.
+Preparing to unpack .../21-python3-roman_2.0.0-3build1_all.deb ...
+Unpacking python3-roman (2.0.0-3build1) ...
+Selecting previously unselected package python3-docutils.
+Preparing to unpack .../22-python3-docutils_0.16+dfsg-2_all.deb ...
+Unpacking python3-docutils (0.16+dfsg-2) ...
+Selecting previously unselected package python3-jmespath.
+Preparing to unpack .../23-python3-jmespath_0.9.4-2ubuntu1_all.deb ...
+Unpacking python3-jmespath (0.9.4-2ubuntu1) ...
+Selecting previously unselected package python3-botocore.
+Preparing to unpack .../24-python3-botocore_1.16.19+repack-1ubuntu0.20.04.1_all.deb ...
+Unpacking python3-botocore (1.16.19+repack-1ubuntu0.20.04.1) ...
+Selecting previously unselected package python3-pyasn1.
+Preparing to unpack .../25-python3-pyasn1_0.4.2-3build1_all.deb ...
+Unpacking python3-pyasn1 (0.4.2-3build1) ...
+Selecting previously unselected package python3-colorama.
+Preparing to unpack .../26-python3-colorama_0.4.3-1build1_all.deb ...
+Unpacking python3-colorama (0.4.3-1build1) ...
+Selecting previously unselected package python3-rsa.
+Preparing to unpack .../27-python3-rsa_4.0-3_all.deb ...
+Unpacking python3-rsa (4.0-3) ...
+Selecting previously unselected package python3-s3transfer.
+Preparing to unpack .../28-python3-s3transfer_0.3.3-1_all.deb ...
+Unpacking python3-s3transfer (0.3.3-1) ...
+Selecting previously unselected package awscli.
+Preparing to unpack .../29-awscli_1.18.69-1ubuntu0.20.04.1_all.deb ...
+Unpacking awscli (1.18.69-1ubuntu0.20.04.1) ...
+Selecting previously unselected package fontconfig.
+Preparing to unpack .../30-fontconfig_2.13.1-2ubuntu3_amd64.deb ...
+Unpacking fontconfig (2.13.1-2ubuntu3) ...
+Selecting previously unselected package fonts-noto-mono.
+Preparing to unpack .../31-fonts-noto-mono_20200323-1build1~ubuntu20.04.1_all.deb ...
+Unpacking fonts-noto-mono (20200323-1build1~ubuntu20.04.1) ...
+Selecting previously unselected package fonts-urw-base35.
+Preparing to unpack .../32-fonts-urw-base35_20170801.1-3_all.deb ...
+Unpacking fonts-urw-base35 (20170801.1-3) ...
+Selecting previously unselected package libgs9-common.
+Preparing to unpack .../33-libgs9-common_9.50~dfsg-5ubuntu4.5_all.deb ...
+Unpacking libgs9-common (9.50~dfsg-5ubuntu4.5) ...
+Selecting previously unselected package libidn11:amd64.
+Preparing to unpack .../34-libidn11_1.33-2.2ubuntu2_amd64.deb ...
+Unpacking libidn11:amd64 (1.33-2.2ubuntu2) ...
+Selecting previously unselected package libijs-0.35:amd64.
+Preparing to unpack .../35-libijs-0.35_0.35-15_amd64.deb ...
+Unpacking libijs-0.35:amd64 (0.35-15) ...
+Selecting previously unselected package libjbig2dec0:amd64.
+Preparing to unpack .../36-libjbig2dec0_0.18-1ubuntu1_amd64.deb ...
+Unpacking libjbig2dec0:amd64 (0.18-1ubuntu1) ...
+Selecting previously unselected package libopenjp2-7:amd64.
+Preparing to unpack .../37-libopenjp2-7_2.3.1-1ubuntu4.20.04.1_amd64.deb ...
+Unpacking libopenjp2-7:amd64 (2.3.1-1ubuntu4.20.04.1) ...
+Selecting previously unselected package libpaper1:amd64.
+Preparing to unpack .../38-libpaper1_1.1.28_amd64.deb ...
+Unpacking libpaper1:amd64 (1.1.28) ...
+Selecting previously unselected package libgs9:amd64.
+Preparing to unpack .../39-libgs9_9.50~dfsg-5ubuntu4.5_amd64.deb ...
+Unpacking libgs9:amd64 (9.50~dfsg-5ubuntu4.5) ...
+Selecting previously unselected package ghostscript.
+Preparing to unpack .../40-ghostscript_9.50~dfsg-5ubuntu4.5_amd64.deb ...
+Unpacking ghostscript (9.50~dfsg-5ubuntu4.5) ...
+Selecting previously unselected package gsfonts.
+Preparing to unpack .../41-gsfonts_1%3a8.11+urwcyr1.0.7~pre44-4.4_all.deb ...
+Unpacking gsfonts (1:8.11+urwcyr1.0.7~pre44-4.4) ...
+Selecting previously unselected package hicolor-icon-theme.
+Preparing to unpack .../42-hicolor-icon-theme_0.17-2_all.deb ...
+Unpacking hicolor-icon-theme (0.17-2) ...
+Selecting previously unselected package imagemagick-6.q16.
+Preparing to unpack .../43-imagemagick-6.q16_8%3a6.9.10.23+dfsg-2.1ubuntu11.4_amd64.deb ...
+Unpacking imagemagick-6.q16 (8:6.9.10.23+dfsg-2.1ubuntu11.4) ...
+Selecting previously unselected package imagemagick.
+Preparing to unpack .../44-imagemagick_8%3a6.9.10.23+dfsg-2.1ubuntu11.4_amd64.deb ...
+Unpacking imagemagick (8:6.9.10.23+dfsg-2.1ubuntu11.4) ...
+Selecting previously unselected package libxcb-render0:amd64.
+Preparing to unpack .../45-libxcb-render0_1.14-2_amd64.deb ...
+Unpacking libxcb-render0:amd64 (1.14-2) ...
+Selecting previously unselected package libxrender1:amd64.
+Preparing to unpack .../46-libxrender1_1%3a0.9.10-1_amd64.deb ...
+Unpacking libxrender1:amd64 (1:0.9.10-1) ...
+Selecting previously unselected package libcairo2:amd64.
+Preparing to unpack .../47-libcairo2_1.16.0-4ubuntu1_amd64.deb ...
+Unpacking libcairo2:amd64 (1.16.0-4ubuntu1) ...
+Selecting previously unselected package libdatrie1:amd64.
+Preparing to unpack .../48-libdatrie1_0.2.12-3_amd64.deb ...
+Unpacking libdatrie1:amd64 (0.2.12-3) ...
+Selecting previously unselected package libdjvulibre-text.
+Preparing to unpack .../49-libdjvulibre-text_3.5.27.1-14ubuntu0.1_all.deb ...
+Unpacking libdjvulibre-text (3.5.27.1-14ubuntu0.1) ...
+Selecting previously unselected package libdjvulibre21:amd64.
+Preparing to unpack .../50-libdjvulibre21_3.5.27.1-14ubuntu0.1_amd64.deb ...
+Unpacking libdjvulibre21:amd64 (3.5.27.1-14ubuntu0.1) ...
+Selecting previously unselected package libilmbase24:amd64.
+Preparing to unpack .../51-libilmbase24_2.3.0-6build1_amd64.deb ...
+Unpacking libilmbase24:amd64 (2.3.0-6build1) ...
+Selecting previously unselected package libimagequant0:amd64.
+Preparing to unpack .../52-libimagequant0_2.12.2-1.1_amd64.deb ...
+Unpacking libimagequant0:amd64 (2.12.2-1.1) ...
+Selecting previously unselected package libopenexr24:amd64.
+Preparing to unpack .../53-libopenexr24_2.3.0-6ubuntu0.5_amd64.deb ...
+Unpacking libopenexr24:amd64 (2.3.0-6ubuntu0.5) ...
+Selecting previously unselected package libthai-data.
+Preparing to unpack .../54-libthai-data_0.1.28-3_all.deb ...
+Unpacking libthai-data (0.1.28-3) ...
+Selecting previously unselected package libthai0:amd64.
+Preparing to unpack .../55-libthai0_0.1.28-3_amd64.deb ...
+Unpacking libthai0:amd64 (0.1.28-3) ...
+Selecting previously unselected package libpango-1.0-0:amd64.
+Preparing to unpack .../56-libpango-1.0-0_1.44.7-2ubuntu4_amd64.deb ...
+Unpacking libpango-1.0-0:amd64 (1.44.7-2ubuntu4) ...
+Selecting previously unselected package libpangoft2-1.0-0:amd64.
+Preparing to unpack .../57-libpangoft2-1.0-0_1.44.7-2ubuntu4_amd64.deb ...
+Unpacking libpangoft2-1.0-0:amd64 (1.44.7-2ubuntu4) ...
+Selecting previously unselected package libpangocairo-1.0-0:amd64.
+Preparing to unpack .../58-libpangocairo-1.0-0_1.44.7-2ubuntu4_amd64.deb ...
+Unpacking libpangocairo-1.0-0:amd64 (1.44.7-2ubuntu4) ...
+Selecting previously unselected package libwmf0.2-7:amd64.
+Preparing to unpack .../59-libwmf0.2-7_0.2.8.4-17ubuntu1_amd64.deb ...
+Unpacking libwmf0.2-7:amd64 (0.2.8.4-17ubuntu1) ...
+Selecting previously unselected package libmagickcore-6.q16-6-extra:amd64.
+Preparing to unpack .../60-libmagickcore-6.q16-6-extra_8%3a6.9.10.23+dfsg-2.1ubuntu11.4_amd64.deb ...
+Unpacking libmagickcore-6.q16-6-extra:amd64 (8:6.9.10.23+dfsg-2.1ubuntu11.4) ...
+Selecting previously unselected package libnetpbm10.
+Preparing to unpack .../61-libnetpbm10_2%3a10.0-15.3build1_amd64.deb ...
+Unpacking libnetpbm10 (2:10.0-15.3build1) ...
+Selecting previously unselected package libpaper-utils.
+Preparing to unpack .../62-libpaper-utils_1.1.28_amd64.deb ...
+Unpacking libpaper-utils (1.1.28) ...
+Selecting previously unselected package libwebpdemux2:amd64.
+Preparing to unpack .../63-libwebpdemux2_0.6.1-2ubuntu0.20.04.1_amd64.deb ...
+Unpacking libwebpdemux2:amd64 (0.6.1-2ubuntu0.20.04.1) ...
+Selecting previously unselected package netpbm.
+Preparing to unpack .../64-netpbm_2%3a10.0-15.3build1_amd64.deb ...
+Unpacking netpbm (2:10.0-15.3build1) ...
+Selecting previously unselected package psutils.
+Preparing to unpack .../65-psutils_1.17.dfsg-4_amd64.deb ...
+Unpacking psutils (1.17.dfsg-4) ...
+Selecting previously unselected package python3-olefile.
+Preparing to unpack .../66-python3-olefile_0.46-2_all.deb ...
+Unpacking python3-olefile (0.46-2) ...
+Selecting previously unselected package python3-pil:amd64.
+Preparing to unpack .../67-python3-pil_7.0.0-4ubuntu0.5_amd64.deb ...
+Unpacking python3-pil:amd64 (7.0.0-4ubuntu0.5) ...
+Selecting previously unselected package python3-pygments.
+Preparing to unpack .../68-python3-pygments_2.3.1+dfsg-1ubuntu2.2_all.deb ...
+Unpacking python3-pygments (2.3.1+dfsg-1ubuntu2.2) ...
+Setting up libpaper1:amd64 (1.1.28) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+
+Creating config file /etc/papersize with new version
+Setting up fontconfig (2.13.1-2ubuntu3) ...
+Regenerating fonts cache... done.
+Setting up imagemagick-6-common (8:6.9.10.23+dfsg-2.1ubuntu11.4) ...
+Setting up fonts-noto-mono (20200323-1build1~ubuntu20.04.1) ...
+Setting up hicolor-icon-theme (0.17-2) ...
+Setting up libxrender1:amd64 (1:0.9.10-1) ...
+Setting up libdatrie1:amd64 (0.2.12-3) ...
+Setting up libwmf0.2-7:amd64 (0.2.8.4-17ubuntu1) ...
+Setting up python3-colorama (0.4.3-1build1) ...
+Setting up libxcb-render0:amd64 (1.14-2) ...
+Setting up libijs-0.35:amd64 (0.35-15) ...
+Setting up python3-olefile (0.46-2) ...
+Setting up python3-yaml (5.3.1-1ubuntu0.1) ...
+Setting up libpaper-utils (1.1.28) ...
+Setting up libnetpbm10 (2:10.0-15.3build1) ...
+Setting up fonts-urw-base35 (20170801.1-3) ...
+Setting up libilmbase24:amd64 (2.3.0-6build1) ...
+Setting up libjbig0:amd64 (2.1-3.1build1) ...
+Setting up libcairo2:amd64 (1.16.0-4ubuntu1) ...
+Setting up poppler-data (0.4.9-2) ...
+Setting up python3-roman (2.0.0-3build1) ...
+Setting up python3-pygments (2.3.1+dfsg-1ubuntu2.2) ...
+Setting up libopenexr24:amd64 (2.3.0-6ubuntu0.5) ...
+Setting up libjbig2dec0:amd64 (0.18-1ubuntu1) ...
+Setting up libidn11:amd64 (1.33-2.2ubuntu2) ...
+Setting up python3-jmespath (0.9.4-2ubuntu1) ...
+Setting up gsfonts (1:8.11+urwcyr1.0.7~pre44-4.4) ...
+Setting up libfribidi0:amd64 (1.0.8-2ubuntu0.1) ...
+Setting up libimagequant0:amd64 (2.12.2-1.1) ...
+Setting up libwebp6:amd64 (0.6.1-2ubuntu0.20.04.1) ...
+Setting up libltdl7:amd64 (2.4.6-14) ...
+Setting up libfftw3-double3:amd64 (3.3.8-2ubuntu1) ...
+Setting up liblqr-1-0:amd64 (0.4.2-2.1) ...
+Setting up libuchardet0:amd64 (0.0.6-3build1) ...
+Setting up python3-pyasn1 (0.4.2-3build1) ...
+Setting up libopenjp2-7:amd64 (2.3.1-1ubuntu4.20.04.1) ...
+Setting up libthai-data (0.1.28-3) ...
+Setting up python3-dateutil (2.7.3-3ubuntu1) ...
+Setting up sgml-base (1.29.1) ...
+Setting up libtiff5:amd64 (4.1.0+git191117-2ubuntu0.20.04.3) ...
+Setting up fonts-droid-fallback (1:6.0.1r16-1.1) ...
+Setting up libdjvulibre-text (3.5.27.1-14ubuntu0.1) ...
+Setting up libwebpmux3:amd64 (0.6.1-2ubuntu0.20.04.1) ...
+Setting up psutils (1.17.dfsg-4) ...
+Setting up libgs9-common (9.50~dfsg-5ubuntu4.5) ...
+Setting up libgs9:amd64 (9.50~dfsg-5ubuntu4.5) ...
+Setting up libwebpdemux2:amd64 (0.6.1-2ubuntu0.20.04.1) ...
+Setting up libdjvulibre21:amd64 (3.5.27.1-14ubuntu0.1) ...
+Setting up ghostscript (9.50~dfsg-5ubuntu4.5) ...
+Setting up libthai0:amd64 (0.1.28-3) ...
+Setting up python3-pil:amd64 (7.0.0-4ubuntu0.5) ...
+Setting up libmagickcore-6.q16-6:amd64 (8:6.9.10.23+dfsg-2.1ubuntu11.4) ...
+Setting up netpbm (2:10.0-15.3build1) ...
+Setting up groff-base (1.22.4-4build1) ...
+Setting up xml-core (0.18+nmu1) ...
+Setting up python3-rsa (4.0-3) ...
+Setting up libmagickwand-6.q16-6:amd64 (8:6.9.10.23+dfsg-2.1ubuntu11.4) ...
+Setting up libpango-1.0-0:amd64 (1.44.7-2ubuntu4) ...
+Setting up groff (1.22.4-4build1) ...
+Setting up imagemagick-6.q16 (8:6.9.10.23+dfsg-2.1ubuntu11.4) ...
+update-alternatives: using /usr/bin/compare-im6.q16 to provide /usr/bin/compare (compare) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/compare.1.gz because associated file /usr/share/man/man1/compare-im6.q16.1.gz (of link group compare) doesn't exist
+update-alternatives: using /usr/bin/compare-im6.q16 to provide /usr/bin/compare-im6 (compare-im6) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/compare-im6.1.gz because associated file /usr/share/man/man1/compare-im6.q16.1.gz (of link group compare-im6) doesn't exist
+update-alternatives: using /usr/bin/animate-im6.q16 to provide /usr/bin/animate (animate) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/animate.1.gz because associated file /usr/share/man/man1/animate-im6.q16.1.gz (of link group animate) doesn't exist
+update-alternatives: using /usr/bin/animate-im6.q16 to provide /usr/bin/animate-im6 (animate-im6) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/animate-im6.1.gz because associated file /usr/share/man/man1/animate-im6.q16.1.gz (of link group animate-im6) doesn't exist
+update-alternatives: using /usr/bin/convert-im6.q16 to provide /usr/bin/convert (convert) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/convert.1.gz because associated file /usr/share/man/man1/convert-im6.q16.1.gz (of link group convert) doesn't exist
+update-alternatives: using /usr/bin/convert-im6.q16 to provide /usr/bin/convert-im6 (convert-im6) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/convert-im6.1.gz because associated file /usr/share/man/man1/convert-im6.q16.1.gz (of link group convert-im6) doesn't exist
+update-alternatives: using /usr/bin/composite-im6.q16 to provide /usr/bin/composite (composite) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/composite.1.gz because associated file /usr/share/man/man1/composite-im6.q16.1.gz (of link group composite) doesn't exist
+update-alternatives: using /usr/bin/composite-im6.q16 to provide /usr/bin/composite-im6 (composite-im6) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/composite-im6.1.gz because associated file /usr/share/man/man1/composite-im6.q16.1.gz (of link group composite-im6) doesn't exist
+update-alternatives: using /usr/bin/conjure-im6.q16 to provide /usr/bin/conjure (conjure) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/conjure.1.gz because associated file /usr/share/man/man1/conjure-im6.q16.1.gz (of link group conjure) doesn't exist
+update-alternatives: using /usr/bin/conjure-im6.q16 to provide /usr/bin/conjure-im6 (conjure-im6) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/conjure-im6.1.gz because associated file /usr/share/man/man1/conjure-im6.q16.1.gz (of link group conjure-im6) doesn't exist
+update-alternatives: using /usr/bin/import-im6.q16 to provide /usr/bin/import (import) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/import.1.gz because associated file /usr/share/man/man1/import-im6.q16.1.gz (of link group import) doesn't exist
+update-alternatives: using /usr/bin/import-im6.q16 to provide /usr/bin/import-im6 (import-im6) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/import-im6.1.gz because associated file /usr/share/man/man1/import-im6.q16.1.gz (of link group import-im6) doesn't exist
+update-alternatives: using /usr/bin/identify-im6.q16 to provide /usr/bin/identify (identify) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/identify.1.gz because associated file /usr/share/man/man1/identify-im6.q16.1.gz (of link group identify) doesn't exist
+update-alternatives: using /usr/bin/identify-im6.q16 to provide /usr/bin/identify-im6 (identify-im6) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/identify-im6.1.gz because associated file /usr/share/man/man1/identify-im6.q16.1.gz (of link group identify-im6) doesn't exist
+update-alternatives: using /usr/bin/stream-im6.q16 to provide /usr/bin/stream (stream) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/stream.1.gz because associated file /usr/share/man/man1/stream-im6.q16.1.gz (of link group stream) doesn't exist
+update-alternatives: using /usr/bin/stream-im6.q16 to provide /usr/bin/stream-im6 (stream-im6) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/stream-im6.1.gz because associated file /usr/share/man/man1/stream-im6.q16.1.gz (of link group stream-im6) doesn't exist
+update-alternatives: using /usr/bin/display-im6.q16 to provide /usr/bin/display (display) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/display.1.gz because associated file /usr/share/man/man1/display-im6.q16.1.gz (of link group display) doesn't exist
+update-alternatives: using /usr/bin/display-im6.q16 to provide /usr/bin/display-im6 (display-im6) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/display-im6.1.gz because associated file /usr/share/man/man1/display-im6.q16.1.gz (of link group display-im6) doesn't exist
+update-alternatives: using /usr/bin/montage-im6.q16 to provide /usr/bin/montage (montage) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/montage.1.gz because associated file /usr/share/man/man1/montage-im6.q16.1.gz (of link group montage) doesn't exist
+update-alternatives: using /usr/bin/montage-im6.q16 to provide /usr/bin/montage-im6 (montage-im6) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/montage-im6.1.gz because associated file /usr/share/man/man1/montage-im6.q16.1.gz (of link group montage-im6) doesn't exist
+update-alternatives: using /usr/bin/mogrify-im6.q16 to provide /usr/bin/mogrify (mogrify) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/mogrify.1.gz because associated file /usr/share/man/man1/mogrify-im6.q16.1.gz (of link group mogrify) doesn't exist
+update-alternatives: using /usr/bin/mogrify-im6.q16 to provide /usr/bin/mogrify-im6 (mogrify-im6) in auto mode
+update-alternatives: warning: skip creation of /usr/share/man/man1/mogrify-im6.1.gz because associated file /usr/share/man/man1/mogrify-im6.q16.1.gz (of link group mogrify-im6) doesn't exist
+Setting up libpangoft2-1.0-0:amd64 (1.44.7-2ubuntu4) ...
+Setting up libpangocairo-1.0-0:amd64 (1.44.7-2ubuntu4) ...
+Setting up libmagickcore-6.q16-6-extra:amd64 (8:6.9.10.23+dfsg-2.1ubuntu11.4) ...
+Setting up imagemagick (8:6.9.10.23+dfsg-2.1ubuntu11.4) ...
+Processing triggers for mime-support (3.64ubuntu1) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.2) ...
+Processing triggers for shared-mime-info (1.15-1) ...
+Processing triggers for sgml-base (1.29.1) ...
+Setting up docutils-common (0.16+dfsg-2) ...
+Processing triggers for sgml-base (1.29.1) ...
+Setting up python3-docutils (0.16+dfsg-2) ...
+update-alternatives: using /usr/share/docutils/scripts/python3/rst-buildhtml to provide /usr/bin/rst-buildhtml (rst-buildhtml) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python3/rst2html to provide /usr/bin/rst2html (rst2html) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python3/rst2html4 to provide /usr/bin/rst2html4 (rst2html4) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python3/rst2html5 to provide /usr/bin/rst2html5 (rst2html5) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python3/rst2latex to provide /usr/bin/rst2latex (rst2latex) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python3/rst2man to provide /usr/bin/rst2man (rst2man) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python3/rst2odt to provide /usr/bin/rst2odt (rst2odt) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python3/rst2odt_prepstyles to provide /usr/bin/rst2odt_prepstyles (rst2odt_prepstyles) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python3/rst2pseudoxml to provide /usr/bin/rst2pseudoxml (rst2pseudoxml) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python3/rst2s5 to provide /usr/bin/rst2s5 (rst2s5) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python3/rst2xetex to provide /usr/bin/rst2xetex (rst2xetex) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python3/rst2xml to provide /usr/bin/rst2xml (rst2xml) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python3/rstpep2html to provide /usr/bin/rstpep2html (rstpep2html) in auto mode
+Setting up python3-botocore (1.16.19+repack-1ubuntu0.20.04.1) ...
+Setting up python3-s3transfer (0.3.3-1) ...
+Setting up awscli (1.18.69-1ubuntu0.20.04.1) ...
+
++ export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_PREPROD
+
++ export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_PREPROD
+
++ export AWS_REGION=us-east-1
+
++ /usr/bin/sh https://bitbucket.org/vivekkarthik/vivek_test/src/da5857dc49e6bba532713a4074a4185394256108/create_ecr.sh service1
+create_ecr.sh: 5: [[: not found
+
++ /usr/bin/sh https://bitbucket.org/vivekkarthik/vivek_test/src/da5857dc49e6bba532713a4074a4185394256108/create_ecr.sh service2
+create_ecr.sh: 5: [[: not found
+
++ /usr/bin/sh https://bitbucket.org/vivekkarthik/vivek_test/src/da5857dc49e6bba532713a4074a4185394256108/create_s3.sh
+bucket exist
+
++ $(aws ecr get-login --no-include-email --region us-east-1 --registry=623199899445)
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+
++ echo 'building images'
+building images
+
++ cd service1 && docker build -t service1:latest  .
+Sending build context to Docker daemon  3.584kB
+Step 1/3 : FROM tiangolo/uwsgi-nginx-flask:python3.8
+python3.8: Pulling from tiangolo/uwsgi-nginx-flask
+85bed84afb9a: Pulling fs layer
+5fdd409f4b2b: Pulling fs layer
+fa3069e6cecf: Pulling fs layer
+4ee16f45eff9: Pulling fs layer
+2cee68386155: Pulling fs layer
+9f6aa32c2b1d: Pulling fs layer
+67110bb7ec55: Pulling fs layer
+c878d3425480: Pulling fs layer
+1f68f2efd72c: Pulling fs layer
+57e9423e4507: Pulling fs layer
+c8e3a485f882: Pulling fs layer
+ee6b19e59909: Pulling fs layer
+7ce429a486aa: Pulling fs layer
+731e6c4c1ad7: Pulling fs layer
+11fea5804e42: Pulling fs layer
+07707b2765bf: Pulling fs layer
+ebf47c2c737f: Pulling fs layer
+bb9165866a64: Pulling fs layer
+c290a01418cd: Pulling fs layer
+67af6958ce4c: Pulling fs layer
+1c2c2e9ff4ec: Pulling fs layer
+2eeae7ec22fc: Pulling fs layer
+912bba882157: Pulling fs layer
+b3d6bc7765a4: Pulling fs layer
+20d41922db99: Pulling fs layer
+0ca9a3714925: Pulling fs layer
+5b78e62d5f4b: Pulling fs layer
+278d24b769b2: Pulling fs layer
+96dbc38521e5: Pulling fs layer
+f48685b658c8: Pulling fs layer
+731e6c4c1ad7: Waiting
+11fea5804e42: Waiting
+07707b2765bf: Waiting
+ebf47c2c737f: Waiting
+bb9165866a64: Waiting
+c290a01418cd: Waiting
+67af6958ce4c: Waiting
+1c2c2e9ff4ec: Waiting
+2eeae7ec22fc: Waiting
+278d24b769b2: Waiting
+96dbc38521e5: Waiting
+912bba882157: Waiting
+f48685b658c8: Waiting
+b3d6bc7765a4: Waiting
+0ca9a3714925: Waiting
+c878d3425480: Waiting
+20d41922db99: Waiting
+5b78e62d5f4b: Waiting
+4ee16f45eff9: Waiting
+2cee68386155: Waiting
+9f6aa32c2b1d: Waiting
+1f68f2efd72c: Waiting
+ee6b19e59909: Waiting
+c8e3a485f882: Waiting
+7ce429a486aa: Waiting
+57e9423e4507: Waiting
+67110bb7ec55: Waiting
+fa3069e6cecf: Verifying Checksum
+fa3069e6cecf: Download complete
+85bed84afb9a: Verifying Checksum
+85bed84afb9a: Download complete
+5fdd409f4b2b: Verifying Checksum
+5fdd409f4b2b: Download complete
+9f6aa32c2b1d: Verifying Checksum
+9f6aa32c2b1d: Download complete
+4ee16f45eff9: Verifying Checksum
+4ee16f45eff9: Download complete
+c878d3425480: Verifying Checksum
+c878d3425480: Download complete
+67110bb7ec55: Verifying Checksum
+67110bb7ec55: Download complete
+1f68f2efd72c: Download complete
+85bed84afb9a: Pull complete
+5fdd409f4b2b: Pull complete
+57e9423e4507: Download complete
+fa3069e6cecf: Pull complete
+c8e3a485f882: Verifying Checksum
+c8e3a485f882: Download complete
+ee6b19e59909: Verifying Checksum
+ee6b19e59909: Download complete
+2cee68386155: Verifying Checksum
+2cee68386155: Download complete
+731e6c4c1ad7: Verifying Checksum
+731e6c4c1ad7: Download complete
+7ce429a486aa: Download complete
+07707b2765bf: Verifying Checksum
+07707b2765bf: Download complete
+11fea5804e42: Download complete
+bb9165866a64: Verifying Checksum
+bb9165866a64: Download complete
+ebf47c2c737f: Verifying Checksum
+ebf47c2c737f: Download complete
+c290a01418cd: Download complete
+4ee16f45eff9: Pull complete
+1c2c2e9ff4ec: Verifying Checksum
+1c2c2e9ff4ec: Download complete
+67af6958ce4c: Verifying Checksum
+67af6958ce4c: Download complete
+2eeae7ec22fc: Verifying Checksum
+2eeae7ec22fc: Download complete
+912bba882157: Verifying Checksum
+912bba882157: Download complete
+20d41922db99: Verifying Checksum
+20d41922db99: Download complete
+b3d6bc7765a4: Verifying Checksum
+b3d6bc7765a4: Download complete
+0ca9a3714925: Verifying Checksum
+0ca9a3714925: Download complete
+5b78e62d5f4b: Download complete
+278d24b769b2: Verifying Checksum
+278d24b769b2: Download complete
+96dbc38521e5: Verifying Checksum
+96dbc38521e5: Download complete
+f48685b658c8: Verifying Checksum
+f48685b658c8: Download complete
+2cee68386155: Pull complete
+9f6aa32c2b1d: Pull complete
+67110bb7ec55: Pull complete
+c878d3425480: Pull complete
+1f68f2efd72c: Pull complete
+57e9423e4507: Pull complete
+c8e3a485f882: Pull complete
+ee6b19e59909: Pull complete
+7ce429a486aa: Pull complete
+731e6c4c1ad7: Pull complete
+11fea5804e42: Pull complete
+07707b2765bf: Pull complete
+ebf47c2c737f: Pull complete
+bb9165866a64: Pull complete
+c290a01418cd: Pull complete
+67af6958ce4c: Pull complete
+1c2c2e9ff4ec: Pull complete
+2eeae7ec22fc: Pull complete
+912bba882157: Pull complete
+b3d6bc7765a4: Pull complete
+20d41922db99: Pull complete
+0ca9a3714925: Pull complete
+5b78e62d5f4b: Pull complete
+278d24b769b2: Pull complete
+96dbc38521e5: Pull complete
+f48685b658c8: Pull complete
+Digest: sha256:f360c389b5280776fd018425736492ef1a6ca6b24592079da6cc0bc33dc4013e
+Status: Downloaded newer image for tiangolo/uwsgi-nginx-flask:python3.8
+ ---> 17386447577e
+Step 2/3 : RUN  pip install urllib3
+ ---> Running in fd211023d40e
+Collecting urllib3
+  Downloading urllib3-1.26.9-py2.py3-none-any.whl (138 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 139.0/139.0 KB 7.2 MB/s eta 0:00:00
+Installing collected packages: urllib3
+Successfully installed urllib3-1.26.9
+[91mWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+[0m[91mWARNING: You are using pip version 22.0.4; however, version 22.1.1 is available.
+You should consider upgrading via the '/usr/local/bin/python -m pip install --upgrade pip' command.
+[0mRemoving intermediate container fd211023d40e
+ ---> 917148801847
+Step 3/3 : COPY ./app /app
+ ---> c76340b2b925
+Successfully built c76340b2b925
+Successfully tagged service1:latest
+
++ cd ../service2 && docker build -t service2:latest .
+Sending build context to Docker daemon  3.584kB
+Step 1/2 : FROM tiangolo/uwsgi-nginx-flask:python3.8
+ ---> 17386447577e
+Step 2/2 : COPY ./app /app
+ ---> e0277369140d
+Successfully built e0277369140d
+Successfully tagged service2:latest
+
++ echo 'images built successfully'
+images built successfully
+
++ docker container run \
+   --volume=/opt/atlassian/pipelines/agent/build:/opt/atlassian/pipelines/agent/build \
+   --volume=/opt/atlassian/pipelines/agent/ssh:/opt/atlassian/pipelines/agent/ssh:ro \
+   --volume=/usr/local/bin/docker:/usr/local/bin/docker:ro \
+   --volume=/opt/atlassian/pipelines/agent/build/.bitbucket/pipelines/generated/pipeline/pipes:/opt/atlassian/pipelines/agent/build/.bitbucket/pipelines/generated/pipeline/pipes \
+   --volume=/opt/atlassian/pipelines/agent/build/.bitbucket/pipelines/generated/pipeline/pipes/atlassian/aws-ecr-push-image:/opt/atlassian/pipelines/agent/build/.bitbucket/pipelines/generated/pipeline/pipes/atlassian/aws-ecr-push-image \
+   --workdir=$(pwd) \
+   --label=org.bitbucket.pipelines.system=true \
+   --env=BITBUCKET_STEP_TRIGGERER_UUID="$BITBUCKET_STEP_TRIGGERER_UUID" \
+   --env=BITBUCKET_REPO_FULL_NAME="$BITBUCKET_REPO_FULL_NAME" \
+   --env=BITBUCKET_GIT_HTTP_ORIGIN="$BITBUCKET_GIT_HTTP_ORIGIN" \
+   --env=BITBUCKET_PROJECT_UUID="$BITBUCKET_PROJECT_UUID" \
+   --env=BITBUCKET_REPO_IS_PRIVATE="$BITBUCKET_REPO_IS_PRIVATE" \
+   --env=BITBUCKET_WORKSPACE="$BITBUCKET_WORKSPACE" \
+   --env=BITBUCKET_REPO_OWNER_UUID="$BITBUCKET_REPO_OWNER_UUID" \
+   --env=BITBUCKET_BRANCH="$BITBUCKET_BRANCH" \
+   --env=BITBUCKET_REPO_UUID="$BITBUCKET_REPO_UUID" \
+   --env=BITBUCKET_PROJECT_KEY="$BITBUCKET_PROJECT_KEY" \
+   --env=BITBUCKET_REPO_SLUG="$BITBUCKET_REPO_SLUG" \
+   --env=CI="$CI" \
+   --env=BITBUCKET_REPO_OWNER="$BITBUCKET_REPO_OWNER" \
+   --env=BITBUCKET_STEP_RUN_NUMBER="$BITBUCKET_STEP_RUN_NUMBER" \
+   --env=BITBUCKET_BUILD_NUMBER="$BITBUCKET_BUILD_NUMBER" \
+   --env=BITBUCKET_GIT_SSH_ORIGIN="$BITBUCKET_GIT_SSH_ORIGIN" \
+   --env=BITBUCKET_PIPELINE_UUID="$BITBUCKET_PIPELINE_UUID" \
+   --env=BITBUCKET_COMMIT="$BITBUCKET_COMMIT" \
+   --env=BITBUCKET_CLONE_DIR="$BITBUCKET_CLONE_DIR" \
+   --env=PIPELINES_JWT_TOKEN="$PIPELINES_JWT_TOKEN" \
+   --env=BITBUCKET_STEP_UUID="$BITBUCKET_STEP_UUID" \
+   --env=BITBUCKET_STEP_OIDC_TOKEN="$BITBUCKET_STEP_OIDC_TOKEN" \
+   --env=BITBUCKET_DOCKER_HOST_INTERNAL="$BITBUCKET_DOCKER_HOST_INTERNAL" \
+   --env=DOCKER_HOST="tcp://host.docker.internal:2375" \
+   --env=BITBUCKET_PIPE_SHARED_STORAGE_DIR="/opt/atlassian/pipelines/agent/build/.bitbucket/pipelines/generated/pipeline/pipes" \
+   --env=BITBUCKET_PIPE_STORAGE_DIR="/opt/atlassian/pipelines/agent/build/.bitbucket/pipelines/generated/pipeline/pipes/atlassian/aws-ecr-push-image" \
+   --env=AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID_PREPROD" \
+   --env=AWS_DEFAULT_REGION="us-east-1" \
+   --env=AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY_PREPROD" \
+   --env=IMAGE_NAME="service1" \
+   --env=TAGS="latest" \
+   --add-host="host.docker.internal:$BITBUCKET_DOCKER_HOST_INTERNAL" \
+   bitbucketpipelines/aws-ecr-push-image:1.5.0
+Unable to find image 'bitbucketpipelines/aws-ecr-push-image:1.5.0' locally
+1.5.0: Pulling from bitbucketpipelines/aws-ecr-push-image
+e5ae68f74026: Pulling fs layer
+d4a99467e40c: Pulling fs layer
+b8216313f4d8: Pulling fs layer
+f88fae61fe7c: Pulling fs layer
+cb549977f6eb: Pulling fs layer
+2bb74fedfaa1: Pulling fs layer
+f88fae61fe7c: Waiting
+9034593d26cf: Pulling fs layer
+b5ae0d938da1: Pulling fs layer
+ac942fe79299: Pulling fs layer
+66dc1ffb66be: Pulling fs layer
+cb549977f6eb: Waiting
+b5ae0d938da1: Waiting
+ac942fe79299: Waiting
+9034593d26cf: Waiting
+66dc1ffb66be: Waiting
+d4a99467e40c: Download complete
+b8216313f4d8: Verifying Checksum
+b8216313f4d8: Download complete
+f88fae61fe7c: Download complete
+cb549977f6eb: Verifying Checksum
+cb549977f6eb: Download complete
+e5ae68f74026: Verifying Checksum
+e5ae68f74026: Download complete
+9034593d26cf: Verifying Checksum
+9034593d26cf: Download complete
+2bb74fedfaa1: Verifying Checksum
+2bb74fedfaa1: Download complete
+66dc1ffb66be: Verifying Checksum
+66dc1ffb66be: Download complete
+ac942fe79299: Verifying Checksum
+ac942fe79299: Download complete
+b5ae0d938da1: Verifying Checksum
+b5ae0d938da1: Download complete
+e5ae68f74026: Pull complete
+d4a99467e40c: Pull complete
+b8216313f4d8: Pull complete
+f88fae61fe7c: Pull complete
+cb549977f6eb: Pull complete
+2bb74fedfaa1: Pull complete
+9034593d26cf: Pull complete
+b5ae0d938da1: Pull complete
+ac942fe79299: Pull complete
+66dc1ffb66be: Pull complete
+Digest: sha256:362571bc6d0ff9cd6414357daa74a9b9dae20ee8c5e9e4a3bd680550cb753b3a
+Status: Downloaded newer image for bitbucketpipelines/aws-ecr-push-image:1.5.0
+[34mINFO: Using default authentication with AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY[0m
+[34mINFO: Executing the aws-ecr-push-image pipe...[0m
+[34mINFO: Found credentials in environment variables.[0m
+[34mINFO: Successfully logged in to https://623199899445.dkr.ecr.us-east-1.amazonaws.com[0m
+[34mINFO: {'status': 'The push refers to repository [623199899445.dkr.ecr.us-east-1.amazonaws.com/service1]'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '9861d641ee63'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '13e72ae0bad9'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '54164401834b'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '3c999c5234d8'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'ff5e36c1d7c2'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '2b08c813e3eb'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '29d0fefa6855'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'f2cb9548af21'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '909a1ae79993'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '37c2cd8bc0ef'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'ec066e3e0099'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '471a3c2b6141'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '656fc273d766'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '836eb7c932fb'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'a48fdfea598e'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'b75a5bb53cff'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '6cba4570870d'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'a21895756f41'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '0e297b7911f2'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '6e8ada56cb88'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'c4a7a7aa07bd'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '14ff6492c116'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'f265355162ae'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '50c79bef9fe2'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'e6fcae6edc15'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '7756e45cb331'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '99382be4915c'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'ca58f1c44290'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '957a6eed8d1f'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '85fe00380881'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '5d253e59e523'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'b9fd5db9c9a6'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '2b08c813e3eb'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '29d0fefa6855'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'f2cb9548af21'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '909a1ae79993'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '37c2cd8bc0ef'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'ec066e3e0099'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '471a3c2b6141'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '656fc273d766'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '836eb7c932fb'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'a48fdfea598e'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'b75a5bb53cff'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '6cba4570870d'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'a21895756f41'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '0e297b7911f2'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '6e8ada56cb88'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'c4a7a7aa07bd'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '14ff6492c116'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'f265355162ae'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '50c79bef9fe2'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'e6fcae6edc15'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '7756e45cb331'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '99382be4915c'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'ca58f1c44290'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '957a6eed8d1f'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '85fe00380881'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '5d253e59e523'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'b9fd5db9c9a6'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '3c999c5234d8'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'ff5e36c1d7c2'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '54164401834b'}[0m
+[34mINFO: {'status': 'Pushing', 'progressDetail': {'current': 17469, 'total': 905567}, 'progress': '[>                                                  ]  17.47kB/905.6kB', 'id': '13e72ae0bad9'}[0m
+[34mINFO: {'status': 'Pushing', 'progressDetail': {'current': 512, 'total': 317}, 'progress': '[==================================================>]     512B', 'id': '9861d641ee63'}[0m
+[34mINFO: {'status': 'Pushing', 'progressDetail': {'current': 2560, 'total': 317}, 'progress': '[==================================================>]   2.56kB', 'id': '9861d641ee63'}[0m
+[34mINFO: {'status': 'Pushing', 'progressDetail': {'current': 110080, 'total': 905567}, 'progress': '[======>                                            ]  110.1kB/905.6kB', 'id': '13e72ae0bad9'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '2b08c813e3eb'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '29d0fefa6855'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'f2cb9548af21'}[0m
+[34mINFO: {'status': 'Pushing', 'progressDetail': {'current': 194560, 'total': 905567}, 'progress': '[==========>                                        ]  194.6kB/905.6kB', 'id': '13e72ae0bad9'}[0m
+[34mINFO: {'status': 'Pushing', 'progressDetail': {'current': 846262, 'total': 905567}, 'progress': '[==============================================>    ]  846.3kB/905.6kB', 'id': '13e72ae0bad9'}[0m
+[34mINFO: {'status': 'Pushing', 'progressDetail': {'current': 994304, 'total': 905567}, 'progress': '[==================================================>]  994.3kB', 'id': '13e72ae0bad9'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '909a1ae79993'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '37c2cd8bc0ef'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'ec066e3e0099'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '471a3c2b6141'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '836eb7c932fb'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '656fc273d766'}[0m
+[34mINFO: {'status': 'Pushed', 'progressDetail': {}, 'id': '9861d641ee63'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'a48fdfea598e'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'b75a5bb53cff'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '6cba4570870d'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'a21895756f41'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '0e297b7911f2'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'c4a7a7aa07bd'}[0m
+[34mINFO: {'status': 'Pushed', 'progressDetail': {}, 'id': '13e72ae0bad9'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '6e8ada56cb88'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '14ff6492c116'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'f265355162ae'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '7756e45cb331'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '50c79bef9fe2'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'e6fcae6edc15'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '99382be4915c'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'ca58f1c44290'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '85fe00380881'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '957a6eed8d1f'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '5d253e59e523'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'b9fd5db9c9a6'}[0m
+[34mINFO: {'status': 'latest: digest: sha256:a8eaf5d3a612be20f3455b41bf0100389f6bdb0ff1973e1e18816bbffe83fe77 size: 7002'}[0m
+[34mINFO: {'progressDetail': {}, 'aux': {'Tag': 'latest', 'Digest': 'sha256:a8eaf5d3a612be20f3455b41bf0100389f6bdb0ff1973e1e18816bbffe83fe77', 'Size': 7002}}[0m
+[32m✔ Successfully pushed service1 to https://623199899445.dkr.ecr.us-east-1.amazonaws.com. 
+The image is available in your ECR repository: https://us-east-1.console.aws.amazon.com/ecr/repositories/service1[0m
+
++ docker container run \
+   --volume=/opt/atlassian/pipelines/agent/build:/opt/atlassian/pipelines/agent/build \
+   --volume=/opt/atlassian/pipelines/agent/ssh:/opt/atlassian/pipelines/agent/ssh:ro \
+   --volume=/usr/local/bin/docker:/usr/local/bin/docker:ro \
+   --volume=/opt/atlassian/pipelines/agent/build/.bitbucket/pipelines/generated/pipeline/pipes:/opt/atlassian/pipelines/agent/build/.bitbucket/pipelines/generated/pipeline/pipes \
+   --volume=/opt/atlassian/pipelines/agent/build/.bitbucket/pipelines/generated/pipeline/pipes/atlassian/aws-ecr-push-image:/opt/atlassian/pipelines/agent/build/.bitbucket/pipelines/generated/pipeline/pipes/atlassian/aws-ecr-push-image \
+   --workdir=$(pwd) \
+   --label=org.bitbucket.pipelines.system=true \
+   --env=BITBUCKET_STEP_TRIGGERER_UUID="$BITBUCKET_STEP_TRIGGERER_UUID" \
+   --env=BITBUCKET_REPO_FULL_NAME="$BITBUCKET_REPO_FULL_NAME" \
+   --env=BITBUCKET_GIT_HTTP_ORIGIN="$BITBUCKET_GIT_HTTP_ORIGIN" \
+   --env=BITBUCKET_PROJECT_UUID="$BITBUCKET_PROJECT_UUID" \
+   --env=BITBUCKET_REPO_IS_PRIVATE="$BITBUCKET_REPO_IS_PRIVATE" \
+   --env=BITBUCKET_WORKSPACE="$BITBUCKET_WORKSPACE" \
+   --env=BITBUCKET_REPO_OWNER_UUID="$BITBUCKET_REPO_OWNER_UUID" \
+   --env=BITBUCKET_BRANCH="$BITBUCKET_BRANCH" \
+   --env=BITBUCKET_REPO_UUID="$BITBUCKET_REPO_UUID" \
+   --env=BITBUCKET_PROJECT_KEY="$BITBUCKET_PROJECT_KEY" \
+   --env=BITBUCKET_REPO_SLUG="$BITBUCKET_REPO_SLUG" \
+   --env=CI="$CI" \
+   --env=BITBUCKET_REPO_OWNER="$BITBUCKET_REPO_OWNER" \
+   --env=BITBUCKET_STEP_RUN_NUMBER="$BITBUCKET_STEP_RUN_NUMBER" \
+   --env=BITBUCKET_BUILD_NUMBER="$BITBUCKET_BUILD_NUMBER" \
+   --env=BITBUCKET_GIT_SSH_ORIGIN="$BITBUCKET_GIT_SSH_ORIGIN" \
+   --env=BITBUCKET_PIPELINE_UUID="$BITBUCKET_PIPELINE_UUID" \
+   --env=BITBUCKET_COMMIT="$BITBUCKET_COMMIT" \
+   --env=BITBUCKET_CLONE_DIR="$BITBUCKET_CLONE_DIR" \
+   --env=PIPELINES_JWT_TOKEN="$PIPELINES_JWT_TOKEN" \
+   --env=BITBUCKET_STEP_UUID="$BITBUCKET_STEP_UUID" \
+   --env=BITBUCKET_STEP_OIDC_TOKEN="$BITBUCKET_STEP_OIDC_TOKEN" \
+   --env=BITBUCKET_DOCKER_HOST_INTERNAL="$BITBUCKET_DOCKER_HOST_INTERNAL" \
+   --env=DOCKER_HOST="tcp://host.docker.internal:2375" \
+   --env=BITBUCKET_PIPE_SHARED_STORAGE_DIR="/opt/atlassian/pipelines/agent/build/.bitbucket/pipelines/generated/pipeline/pipes" \
+   --env=BITBUCKET_PIPE_STORAGE_DIR="/opt/atlassian/pipelines/agent/build/.bitbucket/pipelines/generated/pipeline/pipes/atlassian/aws-ecr-push-image" \
+   --env=AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID_PREPROD" \
+   --env=AWS_DEFAULT_REGION="us-east-1" \
+   --env=AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY_PREPROD" \
+   --env=IMAGE_NAME="service2" \
+   --env=TAGS="latest" \
+   --add-host="host.docker.internal:$BITBUCKET_DOCKER_HOST_INTERNAL" \
+   bitbucketpipelines/aws-ecr-push-image:1.5.0
+[34mINFO: Using default authentication with AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY[0m
+[34mINFO: Executing the aws-ecr-push-image pipe...[0m
+[34mINFO: Found credentials in environment variables.[0m
+[34mINFO: Successfully logged in to https://623199899445.dkr.ecr.us-east-1.amazonaws.com[0m
+[34mINFO: {'status': 'The push refers to repository [623199899445.dkr.ecr.us-east-1.amazonaws.com/service2]'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '208303b10a90'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '54164401834b'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '3c999c5234d8'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'ff5e36c1d7c2'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '2b08c813e3eb'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '29d0fefa6855'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'f2cb9548af21'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '909a1ae79993'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '37c2cd8bc0ef'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'ec066e3e0099'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '471a3c2b6141'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '656fc273d766'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '836eb7c932fb'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'a48fdfea598e'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'b75a5bb53cff'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '6cba4570870d'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'a21895756f41'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '0e297b7911f2'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '6e8ada56cb88'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'c4a7a7aa07bd'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '14ff6492c116'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'f265355162ae'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '50c79bef9fe2'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'e6fcae6edc15'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '7756e45cb331'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '99382be4915c'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '836eb7c932fb'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'ca58f1c44290'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '957a6eed8d1f'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'a48fdfea598e'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '85fe00380881'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'b75a5bb53cff'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': '5d253e59e523'}[0m
+[34mINFO: {'status': 'Preparing', 'progressDetail': {}, 'id': 'b9fd5db9c9a6'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '6cba4570870d'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'a21895756f41'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '0e297b7911f2'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '6e8ada56cb88'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'c4a7a7aa07bd'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '14ff6492c116'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'f265355162ae'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '50c79bef9fe2'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'e6fcae6edc15'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '7756e45cb331'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '99382be4915c'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'ca58f1c44290'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '957a6eed8d1f'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '85fe00380881'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '5d253e59e523'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'b9fd5db9c9a6'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '29d0fefa6855'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'f2cb9548af21'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '909a1ae79993'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '37c2cd8bc0ef'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': 'ec066e3e0099'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '471a3c2b6141'}[0m
+[34mINFO: {'status': 'Waiting', 'progressDetail': {}, 'id': '656fc273d766'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'ff5e36c1d7c2'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '3c999c5234d8'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '54164401834b'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '2b08c813e3eb'}[0m
+[34mINFO: {'status': 'Pushing', 'progressDetail': {'current': 512, 'total': 196}, 'progress': '[==================================================>]     512B', 'id': '208303b10a90'}[0m
+[34mINFO: {'status': 'Pushing', 'progressDetail': {'current': 2560, 'total': 196}, 'progress': '[==================================================>]   2.56kB', 'id': '208303b10a90'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'f2cb9548af21'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '29d0fefa6855'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '909a1ae79993'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '37c2cd8bc0ef'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'ec066e3e0099'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '656fc273d766'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '471a3c2b6141'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '836eb7c932fb'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'a48fdfea598e'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'b75a5bb53cff'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '6cba4570870d'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'a21895756f41'}[0m
+[34mINFO: {'status': 'Pushed', 'progressDetail': {}, 'id': '208303b10a90'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '0e297b7911f2'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '6e8ada56cb88'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'c4a7a7aa07bd'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '14ff6492c116'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'f265355162ae'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '50c79bef9fe2'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'e6fcae6edc15'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '7756e45cb331'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '99382be4915c'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'ca58f1c44290'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '957a6eed8d1f'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '85fe00380881'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': '5d253e59e523'}[0m
+[34mINFO: {'status': 'Layer already exists', 'progressDetail': {}, 'id': 'b9fd5db9c9a6'}[0m
+[34mINFO: {'status': 'latest: digest: sha256:6c4c1649a1e9f24c1c7444f9deab2be745900835bab5b86b9d6239ecdf816543 size: 6792'}[0m
+[34mINFO: {'progressDetail': {}, 'aux': {'Tag': 'latest', 'Digest': 'sha256:6c4c1649a1e9f24c1c7444f9deab2be745900835bab5b86b9d6239ecdf816543', 'Size': 6792}}[0m
+[32m✔ Successfully pushed service2 to https://623199899445.dkr.ecr.us-east-1.amazonaws.com. 
+The image is available in your ECR repository: https://us-east-1.console.aws.amazon.com/ecr/repositories/service2[0m
+Searching for files matching artifact pattern .bitbucket/pipelines/generated/pipeline/pipes/**
+
+Searching for test report files in directories named [test-results, failsafe-reports, test-reports, TestResults, surefire-reports] down to a depth of 4
+Finished scanning for test reports. Found 0 test report files.
+Merged test suites, total number tests is 0, with 0 failures and 0 errors.
+
